@@ -2,20 +2,19 @@
 
 PUID=${PUID:-911}
 PGID=${PGID:-911}
+JENKINS_DATA="${JENKINS_DATA:-/var/jenkins}"
 
-mkdir -p "${JENKINS_DATA:-/var/jenkins}"
-chown -R "${PUID}:${PGID}" "${JENKINS_DATA:-/var/jenkins}" /home/jenkins
+mkdir -p "${JENKINS_DATA}"
+chown -R "${PUID}:${PGID}" "${JENKINS_DATA}" /home/jenkins
 
-#groupmod -g 1000 users || exit 1
 useradd -u "${PUID}" -U -d /home/jenkins -s /bin/bash jenkins || exit 1
 usermod -G jenkins jenkins || exit 1
 groupmod -o -g "$PGID" jenkins || exit 1
-
-# is this even required?
-usermod -aG docker jenkins
+usermod -aG root jenkins
 
 echo "-------------------------------------
-User UID: $(id -u jenkins)
-User GID: $(id -g jenkins)
+User UID:   $(id -u jenkins)
+User GID:   $(id -g jenkins)
+Workspace:  ${JENKINS_DATA}
 -------------------------------------
 "
