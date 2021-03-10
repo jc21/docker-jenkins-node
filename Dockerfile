@@ -5,8 +5,9 @@ SHELL ["/bin/bash", "-c"]
 # docker yum repo
 COPY rootfs/etc/yum.repos.d/docker-ce.repo /etc/yum.repos.d/
 
-# yum, docker, ssh
+# yum, docker, ssh, extras
 RUN yum -y localinstall 'https://yum.jc21.com/jc21-yum.rpm' \
+	&& yum -y install epel-release \
 	&& yum -y install docker-ce-cli bash openssh-server openssh-clients git jq figlet moreutils \
 	&& yum clean all
 
