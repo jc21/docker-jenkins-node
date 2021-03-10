@@ -36,3 +36,14 @@ Add some SSH credentials to Jenkins with:
 An example of jenkins node configuration:
 
 ![Jenkins Config](doc/jenkins_node_config.png)
+
+
+## Caveats
+
+Since this approach is using docker outside of docker, via a socket,
+the paths of the jenkins workspace outside of the container must match
+inside the container too.
+
+eg: defining `/var/lib/docker` as the jenkins working folder inside
+this container means that it will start docker containers on the host
+with mounts inside the same path `/var/lib/docker`
