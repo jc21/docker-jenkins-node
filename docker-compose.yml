@@ -3,6 +3,7 @@ version: "3"
 services:
   jenkins:
     image: jc21/jenkins-node:latest
+    restart: unless-stopped
     ports:
       - 2222:22
     environment:
