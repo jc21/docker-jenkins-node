@@ -20,11 +20,15 @@ RUN curl -L "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=244057_8
 RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config \
 	&& sed -i 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config \
 	&& sed -i 's/#PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-#&& usermod --shell /bin/bash abc
 
 # docker-compose
 RUN curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
 	&& chmod +x /usr/local/bin/docker-compose
+
+# nodejs, yarn
+RUN curl -fsSL https://rpm.nodesource.com/setup_15.x | bash -
+RUN yum -y install nodejs gcc-c++ make
+RUN npm -g install yarn
 
 # s6 overlay
 ENV SUPPRESS_NO_CONFIG_WARNING=1
@@ -40,6 +44,7 @@ COPY rootfs /
 
 RUN docker --version
 RUN java -version
+RUN node --version
 
 EXPOSE 22
 VOLUME /jenkins
