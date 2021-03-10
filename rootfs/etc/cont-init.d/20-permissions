@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+
+chmod 600 /etc/ssh/ssh_host*
+chmod 640 /etc/ssh/ssh_host*.pub
+
+chmod -R 700 /home/jenkins/.ssh
+chmod 600 /home/jenkins/.ssh/*
+
