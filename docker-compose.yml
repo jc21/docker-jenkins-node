@@ -3,6 +3,9 @@ version: "3"
 services:
   jenkins:
     image: jc21/jenkins-node:latest
+    privileged: true
+    ports:
+      - 2222:22
     environment:
       - PUID=1000
       - PGID=1000

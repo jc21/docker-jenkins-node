@@ -40,5 +40,6 @@ COPY rootfs /
 RUN docker --version
 RUN java -version
 
+EXPOSE 22
 VOLUME /jenkins
 CMD [ "/init" ]
