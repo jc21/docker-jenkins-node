@@ -1,9 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-RESET='\E[0m'
-YELLOW='\E[1;33m'
-
-echo -e "${YELLOW}Starting openssh server ...${RESET}"
-
-#s6-setuidgid npmuser /app/bin/server
-/usr/sbin/sshd -D -e

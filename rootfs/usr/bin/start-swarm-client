@@ -1,0 +1,49 @@
+#!/bin/bash
+
+if [ "${MASTER:-}" == "" ]; then
+	echo "ERROR: MASTER var is not set!"
+	exit 1
+fi
+
+if [ "${USERNAME:-}" == "" ]; then
+	echo "ERROR: USERNAME var is not set!"
+	exit 1
+fi
+
+if [ "${PASSWORD:-}" == "" ]; then
+	echo "ERROR: PASSWORD var is not set!"
+	exit 1
+fi
+
+# default name to the hostname
+if [ "${NAME:-}" == "" ]; then
+	NAME=$(hostname)
+fi
+
+# Only use executors param if defined
+if [ "${EXECUTORS:-}" != "" ]; then
+	EXECUTORS="-executors ${EXECUTORS}"
+fi
+
+MODE=${MODE:-normal}
+JENKINS_DATA=${JENKINS_DATA:-/var/lib/jenkins-node}
+
+if [ "${DESCRIPTION:-}" == "" ]; then
+	IP=$(ifconfig en0 | awk '/inet [0-9]/ {split ($2, a, "/"); print a[1]}')
+	DESCRIPTION="CI Node [${IP}]"
+fi
+
+
+# Prepend to a list of labels
+LABELS="swarm ${LABELS}"
+
+java -jar /swarm-client.jar \
+	-description "${DESCRIPTION}" ${EXECUTORS} \
+	-fsroot "${JENKINS_DATA}" \
+	-labels "${LABELS}" \
+	-master "${MASTER}" \
+	-mode "${MODE}" \
+	-name "Swarm_${NAME}" \
+	-retry 0 \
+	-username "${USERNAME}" \
+	-password "${PASSWORD}"

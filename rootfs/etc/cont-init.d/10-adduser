@@ -2,7 +2,7 @@
 
 PUID=${PUID:-911}
 PGID=${PGID:-911}
-JENKINS_DATA="${JENKINS_DATA:-/var/jenkins}"
+JENKINS_DATA="${JENKINS_DATA:-/var/lib/jenkins-node}"
 
 mkdir -p "${JENKINS_DATA}"
 chown -R "${PUID}:${PGID}" "${JENKINS_DATA}" /home/jenkins

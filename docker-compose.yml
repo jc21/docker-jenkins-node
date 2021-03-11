@@ -4,18 +4,29 @@ services:
   jenkins:
     image: jc21/jenkins-node:latest
     restart: unless-stopped
-    ports:
-      - 2222:22
     environment:
       - PUID=1000
       - PGID=1000
       - JENKINS_DATA=/var/lib/jenkins-node
+      # Space delimiters labels. This will be automatically appended on start
+      - LABELS=docker docker-multi
+      # Jenkins Host to connect to
+      - MASTER=http://jenkins.lan
+      # Mode for this node: normal|exclusive. Default: normal
+      - MODE=normal
+      # Number of executors (default: number of CPUs)
+      - EXECUTORS=2
+      # Name of this jenkins node, default is the docker container hostname
+      - NAME=node-086.lan
+      # Description of this node, defaults to something not very useful
+      - DESCRIPTION=A super dooper computer
+      # The Jenkins username for authentication.
+      - USERNAME=jenkinsswarm
+      # The Jenkins user API token or password
+      - PASSWORD=jenkinspass
     volumes:
       # This is required for docker control
       - '/var/run/docker.sock:/var/run/docker.sock'
       # This mount should be the same inside and out
       # and should be the same as JENKINS_DATA
       - '/var/lib/jenkins-node:/var/lib/jenkins-node'
-
-volumes:
-  jenkins_data:
