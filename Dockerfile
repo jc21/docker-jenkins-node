@@ -26,6 +26,10 @@ RUN curl -L "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=244057_8
 RUN curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
 	&& chmod +x /usr/local/bin/docker-compose
 
+# swarm client
+RUN curl -L "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/${SWARM_VERSION}/swarm-client-${SWARM_VERSION}.jar" -o /swarm-client.jar \
+	&& chmod +x /usr/local/bin/docker-compose
+
 # nodejs, yarn
 RUN curl -fsSL https://rpm.nodesource.com/setup_15.x | bash - \
 	&& yum -y install nodejs gcc-c++ make \
