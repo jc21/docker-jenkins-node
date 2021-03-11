@@ -15,15 +15,15 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker build --pull --no-cache --squash --compress -t ${TEMP_IMAGE} .'
+        sh 'docker build --pull --no-cache --squash --compress -t "${TEMP_IMAGE}" .'
       }
     }
     stage('Publish') {
       steps {
-        sh 'docker tag ${TEMP_IMAGE} docker.io/jc21/${IMAGE}:${TAG}'
-        withCredentials([usernamePassword(credentialsId: 'jc21-dockerhub', passwordVariable: 'dpass', usernameVariable: 'duser')]) {
-          sh "docker login -u '${duser}' -p '${dpass}'"
-          sh 'docker push docker.io/jc21/${IMAGE}:${TAG}'
+        sh 'docker tag "${TEMP_IMAGE}" "docker.io/jc21/${IMAGE}:${TAG}"'
+        withCredentials([usernamePassword(credentialsId: 'jc21-dockerhub', passwordVariable: 'DPASS', usernameVariable: 'DUSER')]) {
+          sh 'docker login -u "${DUSER}" -p "${DPASS}"'
+          sh 'docker push "docker.io/jc21/${IMAGE}:${TAG}"'
         }
       }
     }
@@ -41,7 +41,7 @@ pipeline {
       sh 'figlet "FAILURE"'
     }
     always {
-      sh 'docker rmi  ${TEMP_IMAGE}'
+      sh 'docker rmi "${TEMP_IMAGE}"'
     }
   }
 }
