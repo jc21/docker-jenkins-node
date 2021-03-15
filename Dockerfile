@@ -33,6 +33,7 @@ RUN curl -L "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-c
 # nodejs, yarn
 RUN curl -fsSL https://rpm.nodesource.com/setup_15.x | bash - \
 	&& yum -y install nodejs gcc-c++ make \
+	&& yarn clean all \
 	&& npm -g install yarn \
 	&& node --version
 
@@ -48,5 +49,6 @@ RUN curl -L -o /tmp/s6-overlay-amd64.tar.gz "https://github.com/just-containers/
 # root fs files
 COPY rootfs /
 
+ENV HOME=/home/jenkins
 VOLUME /var/lib/jenkins-node
 CMD [ "/init" ]
