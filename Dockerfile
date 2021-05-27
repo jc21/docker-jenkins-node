@@ -3,7 +3,7 @@ FROM centos:7
 ENV SWARM_VERSION=3.25 \
 	COMPOSE_VERSION=1.28.5 \
 	S6_VERSION=2.2.0.3 \
-	LANG=en_AU.UTF-8
+	LANG=en_US.utf8
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
