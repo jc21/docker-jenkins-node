@@ -1,7 +1,7 @@
 FROM centos:7
 
-ENV SWARM_VERSION=3.25 \
-	COMPOSE_VERSION=1.28.5 \
+ENV SWARM_VERSION=3.34 \
+	COMPOSE_VERSION=2.6.1 \
 	S6_VERSION=2.2.0.3 \
 	LANG=en_US.utf8
 
@@ -18,7 +18,7 @@ RUN yum -y localinstall 'https://yum.jc21.com/jc21-yum.rpm' \
 	&& docker --version
 
 # oracle java
-RUN curl -L "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=244057_89d678f2be164786b292527658ca1605" -o /tmp/java.rpm \
+RUN curl -L "https://download.oracle.com/java/18/latest/jdk-18_linux-x64_bin.rpm" -o /tmp/java.rpm \
 	&& yum -y localinstall /tmp/java.rpm \
 	&& rm -f /tmp/java.rpm \
 	&& java -version
@@ -32,7 +32,7 @@ RUN curl -L "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-c
 	&& chmod +x /usr/local/bin/docker-compose
 
 # nodejs, yarn
-RUN curl -fsSL https://rpm.nodesource.com/setup_15.x | bash - \
+RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash - \
 	&& yum -y install nodejs gcc-c++ make \
 	&& yum clean all \
 	&& npm -g install yarn \
