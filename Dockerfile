@@ -1,7 +1,7 @@
 FROM centos:7
 
 ENV SWARM_VERSION=3.34 \
-	COMPOSE_VERSION=2.6.1 \
+	COMPOSE_VERSION=2.10.0 \
 	S6_VERSION=2.2.0.3 \
 	LANG=en_US.utf8
 
@@ -24,12 +24,12 @@ RUN curl -L "https://download.oracle.com/java/18/latest/jdk-18_linux-x64_bin.rpm
 	&& java -version
 
 # docker-compose
-RUN curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
-	&& chmod +x /usr/local/bin/docker-compose
+RUN curl -L "https://github.com/docker/compose/releases/download/v${COMPOSE_VERSION}/docker-compose-$(uname -s | sed -e 's/\(.*\)/\L\1/')-$(uname -m | sed -e 's/\(.*\)/\L\1/')" -o /usr/local/bin/docker-compose \
+	&& chmod +x /usr/local/bin/docker-compose \
+	&& /usr/local/bin/docker-compose --version
 
 # swarm client
-RUN curl -L "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/${SWARM_VERSION}/swarm-client-${SWARM_VERSION}.jar" -o /swarm-client.jar \
-	&& chmod +x /usr/local/bin/docker-compose
+RUN curl -L "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/${SWARM_VERSION}/swarm-client-${SWARM_VERSION}.jar" -o /swarm-client.jar
 
 # nodejs, yarn
 RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash - \
