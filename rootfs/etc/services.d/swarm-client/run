@@ -1,8 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-RESET='\E[0m'
-YELLOW='\E[1;33m'
-
-echo -e "${YELLOW}Starting swarm-client${RESET}"
-
-s6-setuidgid jenkins /usr/bin/start-swarm-client

@@ -1,4 +1,9 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
+# shellcheck shell=bash
+
+set -e
+
+log_info 'Checking docker ...'
 
 if [ -S /var/run/docker.sock ]; then
 	# Docker socket exists, let's match the group id on the socket to

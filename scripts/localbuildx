@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "${DIR}/.."
+
+export IMAGE=jenkins-node
+export TAG=test
+
+./scripts/buildx --push -f docker/Dockerfile -t docker.io/jc21/${IMAGE}:${TAG}

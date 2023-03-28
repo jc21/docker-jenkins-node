@@ -1,8 +1,13 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
+# shellcheck shell=bash
+
+set -e
 
 PUID=${PUID:-911}
 PGID=${PGID:-911}
 JENKINS_DATA="${JENKINS_DATA:-/var/lib/jenkins-node}"
+
+log_info 'Configuring user ...'
 
 mkdir -p "${JENKINS_DATA}"
 chown -R "${PUID}:${PGID}" "${JENKINS_DATA}" /home/jenkins
