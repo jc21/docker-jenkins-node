@@ -1,18 +1,17 @@
 #!/bin/bash
 
+. /usr/bin/common.sh
+
 if [ "${MASTER:-}" == "" ]; then
-	echo "ERROR: MASTER var is not set!"
-	exit 1
+	log_fatal 'MASTER var is not set!'
 fi
 
 if [ "${USERNAME:-}" == "" ]; then
-	echo "ERROR: USERNAME var is not set!"
-	exit 1
+	log_fatal 'USERNAME var is not set!'
 fi
 
 if [ "${PASSWORD:-}" == "" ]; then
-	echo "ERROR: PASSWORD var is not set!"
-	exit 1
+	log_fatal 'PASSWORD var is not set!'
 fi
 
 # default name to the hostname
@@ -36,6 +35,8 @@ fi
 
 # Prepend to a list of labels
 LABELS="swarm ${LABELS}"
+
+log_info 'Starting swarm client ...'
 
 java -jar /swarm-client.jar \
 	-description "${DESCRIPTION}" ${EXECUTORS} \

@@ -1,12 +1,8 @@
 #!/bin/bash -e
 
-CYAN='\E[1;36m'
-YELLOW='\E[1;33m'
-BLUE='\E[1;34m'
-GREEN='\E[1;32m'
-RESET='\E[0m'
+. /usr/bin/common.sh
 
-TARGETPLATFORM=${1:unspecified}
+TARGETPLATFORM=${1:-unspecified}
 
 # Determine the correct binary file for the architecture given
 case $TARGETPLATFORM in
@@ -24,15 +20,15 @@ case $TARGETPLATFORM in
 esac
 
 if ! [ "${RPM:-}" = "" ]; then
-	echo -e "${BLUE}❯ ${CYAN}Installing java from ${RPM} for ${YELLOW}${TARGETPLATFORM}${RESET}"
+	log_info "Installing java from ${RPM} for ${YELLOW}${TARGETPLATFORM}"
 	curl -L "$RPM" -o /tmp/java.rpm
 	yum -y localinstall /tmp/java.rpm
 	rm -f /tmp/java.rpm
 else
 	# fall back to openjdk
-	echo -e "${BLUE}❯ ${CYAN}Installing java from java-1.8.0-openjdk for ${YELLOW}${TARGETPLATFORM}${RESET}"
+	log_info "Installing java from java-1.8.0-openjdk for ${YELLOW}${TARGETPLATFORM}"
 	yum -y install java-1.8.0-openjdk
 fi
 
 java -version
-echo -e "${BLUE}❯ ${GREEN}java install Complete${RESET}"
+log_info "java install Complete"

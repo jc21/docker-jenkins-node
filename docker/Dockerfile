@@ -22,6 +22,8 @@ RUN yum -y install docker-ce-cli bash openssh-clients git jq figlet moreutils zi
 RUN yum clean all
 RUN docker --version
 
+COPY docker/rootfs/usr/bin/common.sh /usr/bin/
+
 # oracle java
 COPY scripts/install-java /tmp/install-java
 RUN /tmp/install-java "${TARGETPLATFORM}" && rm -f /tmp/install-java
