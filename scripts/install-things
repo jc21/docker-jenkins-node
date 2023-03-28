@@ -35,7 +35,12 @@ apt-get install -y --no-install-recommends \
 	moreutils \
 	zip \
 	xz-utils \
-	git
+	git \
+	locales
+
+###################
+# locale
+locale-gen --purge en_US.UTF-8
 
 ###################
 # Docker

@@ -1,6 +1,9 @@
 FROM debian:bullseye-slim
 
-ENV LANG=en_US.utf8
+ENV LANG=en_US.utf8 \
+	LANGUAGE=en_US.UTF-8 \
+	LC_ALL=en_US.UTF-8
+
 ARG TARGETPLATFORM
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 

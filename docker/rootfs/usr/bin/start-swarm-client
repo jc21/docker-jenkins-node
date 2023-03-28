@@ -38,7 +38,7 @@ LABELS="swarm ${LABELS}"
 
 log_info 'Starting swarm client ...'
 
-java -jar /swarm-client.jar \
+java -Dfile.encoding=UTF-8 -jar /swarm-client.jar \
 	-description "${DESCRIPTION}" ${EXECUTORS} \
 	-fsroot "${JENKINS_DATA}" \
 	-labels "${LABELS}" \
