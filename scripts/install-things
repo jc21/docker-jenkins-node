@@ -1,0 +1,90 @@
+#!/bin/bash -e
+
+# Note: This script is designed to be run inside a Docker Build for a container
+
+. /usr/bin/common.sh
+
+S6_OVERLAY_VERSION=3.1.4.1
+TARGETPLATFORM=${1:-unspecified}
+SWARM_VERSION=3.39
+
+# Determine the correct binary file for the architecture given
+case $TARGETPLATFORM in
+	linux/arm64)
+		S6_ARCH=aarch64
+		;;
+
+	linux/arm/v7)
+		S6_ARCH=armhf
+		;;
+
+	*)
+		S6_ARCH=x86_64
+		;;
+esac
+
+log_info 'Installing packages ...'
+apt-get update
+apt-get install -y --no-install-recommends \
+	ca-certificates \
+	gnupg \
+	curl \
+	openjdk-17-jre-headless \
+	jq \
+	figlet \
+	moreutils \
+	zip \
+	xz-utils \
+	git
+
+###################
+# Docker
+log_info 'Installing Docker ...'
+mkdir -m 0755 -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+	tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+apt-get update
+apt-get install -y --no-install-recommends \
+	docker-ce-cli \
+	docker-buildx-plugin \
+	docker-compose-plugin
+
+###################
+# S6
+log_info "Installing S6-overlay v${S6_OVERLAY_VERSION} for ${YELLOW}${TARGETPLATFORM} (${S6_ARCH})"
+curl -L -o '/tmp/s6-overlay-noarch.tar.xz' "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz"
+curl -L -o "/tmp/s6-overlay-${S6_ARCH}.tar.xz" "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${S6_ARCH}.tar.xz"
+tar -C / -Jxpf '/tmp/s6-overlay-noarch.tar.xz'
+tar -C / -Jxpf "/tmp/s6-overlay-${S6_ARCH}.tar.xz"
+rm -rf "/tmp/s6-overlay-${S6_ARCH}.tar.xz"
+log_info "S6-overlay install Complete"
+
+###################
+# Swarm client
+log_info 'Installing swarm-client ...'
+curl -L "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/${SWARM_VERSION}/swarm-client-${SWARM_VERSION}.jar" -o /swarm-client.jar
+
+###################
+# Nodejs and yarn
+log_info 'Installing nodejs ...'
+curl -sL https://deb.nodesource.com/setup_16.x | bash -
+curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list
+apt-get update
+apt-get install -y --no-install-recommends \
+	nodejs \
+	yarn \
+	gcc \
+	g++ \
+	make
+node --version
+
+###################
+# Cleanup
+log_info 'Cleaning up ...'
+apt-get clean
+rm -rf /var/lib/apt/lists/* /var/cache/* /var/log/* /tmp/* /var/lib/dpkg/status-old

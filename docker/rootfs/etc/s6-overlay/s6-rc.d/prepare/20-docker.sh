@@ -13,6 +13,7 @@ if [ -S /var/run/docker.sock ]; then
 		# This gives the jenkins user the ability to run docker
 		# commands against the socket without changing permissions
 		# on the socket
+		groupadd -f docker || true
 		usermod -aG docker jenkins
 		groupmod -o -g "${HOST_DOCKER_GROUP}" docker
 	else
