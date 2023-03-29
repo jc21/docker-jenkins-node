@@ -12,7 +12,14 @@ log_info 'Configuring user ...'
 mkdir -p "${JENKINS_DATA}"
 chown -R "${PUID}:${PGID}" "${JENKINS_DATA}" /home/jenkins
 
-useradd -u "${PUID}" -U -d /home/jenkins -s /bin/bash jenkins || exit 1
+if id -u jenkins; then
+	# user already exists
+	usermod -u "${PUID}" jenkins || exit 1
+else
+	# Add npmuser user
+	useradd -u "${PUID}" -U -d /home/jenkins -s /bin/false jenkins || exit 1
+fi
+
 usermod -G jenkins jenkins || exit 1
 groupmod -o -g "$PGID" jenkins || exit 1
 usermod -aG root jenkins
