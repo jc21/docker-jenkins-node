@@ -36,7 +36,8 @@ apt-get install -y --no-install-recommends \
 	zip \
 	xz-utils \
 	git \
-	locales
+	locales \
+	openssh-client
 
 ###################
 # locale
