@@ -47,4 +47,5 @@ java -Dfile.encoding=UTF-8 -jar /swarm-client.jar \
 	-name "Swarm_${NAME}" \
 	-retry 0 \
 	-username "${USERNAME}" \
-	-password "${PASSWORD}"
+	-password "${PASSWORD}" \
+	-webSocket
