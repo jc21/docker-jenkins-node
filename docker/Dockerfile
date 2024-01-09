@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 ENV LANG=en_US.utf8 \
 	LANGUAGE=en_US.UTF-8 \

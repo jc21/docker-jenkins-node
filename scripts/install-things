@@ -4,9 +4,9 @@
 
 . /usr/bin/common.sh
 
-S6_OVERLAY_VERSION=3.1.4.1
+S6_OVERLAY_VERSION=3.1.6.2
 TARGETPLATFORM=${1:-unspecified}
-SWARM_VERSION=3.39
+SWARM_VERSION=3.44
 
 # Determine the correct binary file for the architecture given
 case $TARGETPLATFORM in
@@ -77,17 +77,19 @@ curl -L "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-clien
 ###################
 # Nodejs and yarn
 log_info 'Installing nodejs ...'
-curl -sL https://deb.nodesource.com/setup_16.x | bash -
-curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null
-echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list
+curl -sL https://deb.nodesource.com/setup_20.x | bash -
 apt-get update
 apt-get install -y --no-install-recommends \
 	nodejs \
-	yarn \
 	gcc \
 	g++ \
 	make
-node --version
+
+npm install -g yarn
+
+echo "NodeJS $(node --version)"
+echo "Npm v$(npm --version)"
+echo "Yarn v$(yarn --version)"
 
 ###################
 # Cleanup
