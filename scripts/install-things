@@ -6,7 +6,7 @@
 
 S6_OVERLAY_VERSION=3.1.6.2
 TARGETPLATFORM=${1:-unspecified}
-SWARM_VERSION=3.44
+SWARM_VERSION=3.46
 
 # Determine the correct binary file for the architecture given
 case $TARGETPLATFORM in
