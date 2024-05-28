@@ -16,6 +16,9 @@ RUN /tmp/install-things "${TARGETPLATFORM}" \
 # root fs files
 COPY docker/rootfs /
 
-ENV HOME=/home/jenkins
+ENV HOME=/home/jenkins USER=jenkins
+
 VOLUME /var/lib/jenkins-node
+
 CMD [ "/init" ]
+
