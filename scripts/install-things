@@ -4,7 +4,7 @@
 
 . /usr/bin/common.sh
 
-S6_OVERLAY_VERSION=3.1.6.2
+S6_OVERLAY_VERSION=3.2.1.0
 TARGETPLATFORM=${1:-unspecified}
 SWARM_VERSION=3.51
 
@@ -29,7 +29,7 @@ apt-get install -y --no-install-recommends \
 	ca-certificates \
 	gnupg \
 	curl \
-	openjdk-17-jre-headless \
+	openjdk-25-jre-headless \
 	jq \
 	figlet \
 	moreutils \
@@ -47,7 +47,8 @@ locale-gen --purge en_US.UTF-8
 ###################
 # Docker
 log_info 'Installing Docker ...'
-mkdir -m 0755 -p /etc/apt/keyrings
+mkdir -p /etc/apt/keyrings
+chmod 0755 /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
 echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
