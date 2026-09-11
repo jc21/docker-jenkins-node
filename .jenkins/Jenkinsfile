@@ -1,4 +1,7 @@
 pipeline {
+	triggers {
+		cron('0 22 * * 0')
+	}
 	agent {
 		label 'docker-multiarch'
 	}
